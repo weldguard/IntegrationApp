@@ -58,6 +58,23 @@ namespace IntegrationApp
             string progID = config["1cPath:1cVersion"];
             Type type1c = Type.GetTypeFromProgID(progID);
             dynamic obj1c = Activator.CreateInstance(type1c);
+            //dynamic v8Db = obj1cе
+            
+            /* TODO:        
+            схема: 
+            ссылки на номенклатуру
+            создание документа
+            из класса внутри c# в документ 1с
+            заполнение документа
+            внедряем маппинг
+            внедряем проверку необходимых
+            если не находим проблем, то сохраняем бэкап
+            если проблема, то анализируем и логируем изменения
+            не забыть, что юзер будет technical в 1с с ограниченными правами
+            */
+
+
+
         }
     }
 }
