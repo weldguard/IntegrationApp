@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LogikalERPExport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Header>
+    <ProjectNumber>PRJ-2026-XYZ</ProjectNumber>
+    <ProjectName>Окна для коттеджа</ProjectName>
+    <CustomerCode>ФР-000080</CustomerCode>
+  </Header>
+  <Positions>
+    <Position Id="1">
+      <Description>Окно фасадное</Description>
+      <Components>
+        <Component>
+          <Article>ART-001</Article>
+          <Quantity>15.5</Quantity>
+        </Component>
+        <Component>
+          <Article>ART-002</Article>
+          <Quantity>40</Quantity>
+        </Component>
+      </Components>
+    </Position>
+  </Positions>
+</LogikalERPExport>
