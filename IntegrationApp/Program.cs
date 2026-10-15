@@ -49,17 +49,18 @@ namespace IntegrationApp
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
-            XmlSerializer xmlSerialyzer = new XmlSerializer(typeof(LogikalData));
             string xmlPath = config["LogikalSample:XMLFile"];
+            string progID = config["1cPath:1cVersion"];
+            string connectionString = config["ConnectionString"];
+            XmlSerializer xmlSerialyzer = new XmlSerializer(typeof(LogikalData));
             using (StreamReader xmlFile = new StreamReader(xmlPath, Encoding.UTF8))
             {
                 LogikalData logData = (LogikalData)xmlSerialyzer.Deserialize(xmlFile);
             }
-            string progID = config["1cPath:1cVersion"];
-            Type type1c = Type.GetTypeFromProgID(progID);
-            dynamic obj1c = Activator.CreateInstance(type1c);
-            //dynamic v8Db = obj1cе
-            
+            Type typeOneC = Type.GetTypeFromProgID(progID);
+            dynamic objOneC = Activator.CreateInstance(typeOneC);
+            dynamic v8Db = objOneC.Connect(connectionString);
+
             /* TODO:        
             схема: 
             ссылки на номенклатуру
