@@ -49,9 +49,9 @@ namespace IntegrationApp
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
-            string xmlPath = config["LogikalSample:XMLFile"];
-            string progID = config["1cPath:1cVersion"];
-            string connectionString = config["ConnectionString"];
+            string xmlPath = config["LogikalSample:XMLFilePath"];
+            string progID = config["OneCConfig:progID"];
+            string baseUsrPwd = config["OneCConfig:BaseUsrPwd"];
             XmlSerializer xmlSerialyzer = new XmlSerializer(typeof(LogikalData));
             using (StreamReader xmlFile = new StreamReader(xmlPath, Encoding.UTF8))
             {
@@ -59,7 +59,7 @@ namespace IntegrationApp
             }
             Type typeOneC = Type.GetTypeFromProgID(progID);
             dynamic objOneC = Activator.CreateInstance(typeOneC);
-            dynamic v8Db = objOneC.Connect(connectionString);
+            dynamic v8Db = objOneC.Connect(baseUsrPwd);
 
             /* TODO:        
             схема: 
