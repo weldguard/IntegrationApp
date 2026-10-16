@@ -18,10 +18,7 @@ namespace IntegrationApp
             XmlSerializer xmlSerialyzer = new XmlSerializer(typeof(LogikalData));
             using StreamReader xmlFile = new StreamReader(xmlPath, Encoding.UTF8);
             LogikalData logData = (LogikalData)xmlSerialyzer.Deserialize(xmlFile);
-            var logDataCollection = logData.xmlPositions
-                .Select(x => $"ID = {x.id}, Components = "
-                + string.Join(',', x.xmlComponents.Select(x => $"Article = {x.xmlArticle}, Quantity = {x.Quantity}")));
-            foreach (var logClass in logDataCollection) Console.WriteLine(logClass);
+            Console.WriteLine(logData);
             Type typeOneC = Type.GetTypeFromProgID(progID);
             dynamic objOneC = Activator.CreateInstance(typeOneC);
             dynamic v8Db = objOneC.Connect(baseUsrPwd);

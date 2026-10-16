@@ -10,11 +10,18 @@ namespace IntegrationApp
     [XmlRoot("LogikalERPExport")]
     public class LogikalData
     {
-        [XmlElement]
+        [XmlElement("Header")]
         public XMLHeader xmlHeader;
         [XmlArray("Positions")]
         [XmlArrayItem("Position")]
         public List<XMLPosition> xmlPositions;
+
+        public override string ToString()
+        {
+            var xmlPosCol = xmlPositions.Select(x => x.ToString());
+            var xmlPosStr = string.Join(',', xmlPosCol);
+            return $"Header:\n{xmlHeader}\nPositions:\n{xmlPosStr}\n";
+        }
     }
 
     public class XMLHeader
@@ -22,9 +29,14 @@ namespace IntegrationApp
         [XmlElement("ProjectNumber")]
         public string projectNumber;
         [XmlElement("ProjectName")]
-        public string name;
+        public string projectName;
         [XmlElement("CustomerCode")]
         public string customerCode;
+
+        public override string ToString()
+        {
+            return $"Project Number: {projectNumber}, Project Name: {projectName}, Customer Code: {customerCode}";
+        }
     }
 
     public class XMLPosition
@@ -34,6 +46,13 @@ namespace IntegrationApp
         [XmlArray("Components")]
         [XmlArrayItem("Component")]
         public List<XMLComponent> xmlComponents;
+
+        public override string ToString()
+        {
+            var xmlCompCollect = xmlComponents.Select(x => x.ToString());
+            var strComps = string.Join(',', xmlCompCollect);
+            return $"ID = {id}\nComponents:\n{strComps}";
+        }
     }
 
     public class XMLComponent
@@ -41,7 +60,12 @@ namespace IntegrationApp
         [XmlElement("Article")]
         public string xmlArticle;
         [XmlElement("Quanity")]
-        public double Quantity;
+        public double quanity;
+
+        public override string ToString()
+        {
+            return $"Article = {xmlArticle}, Quanity = {quanity}";
+        }
     }
 
 
