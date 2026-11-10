@@ -35,7 +35,7 @@ namespace IntegrationApp
 
         public override string ToString()
         {
-            return $"Project Number: {projectNumber}, Project Name: {projectName}, Customer Code: {customerCode}";
+            return $"Project Number: {projectNumber}\nProject Name: {projectName}\nCustomer Code: {customerCode}\n";
         }
     }
 
@@ -43,6 +43,8 @@ namespace IntegrationApp
     {
         [XmlAttribute("Id")]
         public int id;
+        [XmlElement("Description")]
+        public string description;
         [XmlArray("Components")]
         [XmlArrayItem("Component")]
         public List<XMLComponent> xmlComponents;
@@ -50,8 +52,8 @@ namespace IntegrationApp
         public override string ToString()
         {
             var xmlCompCollect = xmlComponents.Select(x => x.ToString());
-            var strComps = string.Join(',', xmlCompCollect);
-            return $"ID = {id}\nComponents:\n{strComps}";
+            var strComps = string.Join('\n',xmlCompCollect);
+            return $"ID = {id}, Description = {description}\nComponents:\n{strComps}";
         }
     }
 
@@ -59,12 +61,12 @@ namespace IntegrationApp
     {
         [XmlElement("Article")]
         public string xmlArticle;
-        [XmlElement("Quanity")]
-        public double quanity;
+        [XmlElement("Quantity")]
+        public double quantity;
 
         public override string ToString()
         {
-            return $"Article = {xmlArticle}, Quanity = {quanity}";
+            return $"Article = {xmlArticle}, Quanity = {quantity}";
         }
     }
 

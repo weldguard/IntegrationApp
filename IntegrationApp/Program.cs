@@ -12,30 +12,44 @@ namespace IntegrationApp
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
-            string xmlPath = config["LogikalSample:XMLFilePath"];
-            string progID = config["OneCConfig:progID"];
+
+            string xmlFilePath = config["LogikalSample:XMLFilePath"];
+            string OneCprogID = config["OneCConfig:ProgID"];
             string baseUsrPwd = config["OneCConfig:BaseUsrPwd"];
+            string articleProduct = config["OneCConfig:ArtProduct"];
+
             XmlSerializer xmlSerialyzer = new XmlSerializer(typeof(LogikalData));
-            using StreamReader xmlFile = new StreamReader(xmlPath, Encoding.UTF8);
+            using StreamReader xmlFile = new StreamReader(xmlFilePath, Encoding.UTF8);
             LogikalData logData = (LogikalData)xmlSerialyzer.Deserialize(xmlFile);
+
             Console.WriteLine(logData);
-            Type typeOneC = Type.GetTypeFromProgID(progID);
+
+            Type typeOneC = Type.GetTypeFromProgID(OneCprogID);
             dynamic objOneC = Activator.CreateInstance(typeOneC);
             dynamic v8Db = objOneC.Connect(baseUsrPwd);
 
-            /* TODO:
-            схема: 
-            ссылки на номенклатуру
-            создание документа
-            из класса внутри c# в документ 1с
-            заполнение документа
-            внедряем маппинг
-            внедряем проверку необходимых
-            если не находим проблем, то сохраняем бэкап
-            если проблема, то анализируем и логируем изменения
-            не забыть, что юзер будет technical в 1с с ограниченными правами
-            покрытие тестами логических функций парсинга
-            */
+            dynamic nomenclatureProduct = v8Db.Справочники.Номенклатура.НайтиПоРеквизиту("Артикул", articleProduct);
+            dynamic newDoc = v8Db.Документы.ЗаказНаПроизводство.СоздатьДокумент();
+            newDoc.Комментарий = logData.xmlHeader.ToString();
+            foreach (var xmlPos in logData.xmlPositions)
+            {
+                dynamic productRow = newDoc.Продукция.Добавить();
+                productRow.Номенклатура = nomenclatureProduct;
+                productRow.КлючСвязи = xmlPos.id;
+                newDoc.Комментарий += $"Pos: {xmlPos.id}, Description: {xmlPos.description} \n";
+                foreach (var xmlCopm in xmlPos.xmlComponents)
+                {
+                    dynamic newRow = newDoc.Запасы.Добавить();
+                    dynamic nomenclature = v8Db.Справочники.Номенклатура.НайтиПоРеквизиту("Артикул", xmlCopm.xmlArticle);
+                    newRow.Номенклатура = nomenclature;
+                    newRow.Количество = xmlCopm.quantity;
+                    newRow.КлючСВязи = xmlPos.id;
+                }
+            }
+            newDoc.Дата = DateTime.Now;
+            dynamic orgOneC = v8Db.Справочники.Организации.НайтиПоНаименованию("Ассоль ООО");
+            newDoc.Организация = orgOneC;
+            newDoc.Записать();
         }
     }
 }
