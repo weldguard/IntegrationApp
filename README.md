@@ -47,7 +47,7 @@ IntegrationApp/
 
 1. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com/projectsavemail.git
+   git clone https://github.com/weldguard/IntegrationApp.git
    cd IntegrationApp
    ```
 
